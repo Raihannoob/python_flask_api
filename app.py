@@ -1,8 +1,14 @@
 import flask
 from flask import request,jsonify
-
+from flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token,
+    get_jwt_identity
+)
 app = flask.Flask(__name__)
 app.config['DEBUG'] = True
+# Setup the Flask-JWT-Extended extension. Read more: https://flask-jwt-extended.readthedocs.io/en/stable/options/
+app.config['JWT_SECRET_KEY'] = 'secret-secret'  # Change this!
+jwt = JWTManager(app)
 
 # Create some test data for our catalog in the form of a list of dictionaries.
 books = [
@@ -25,8 +31,12 @@ books = [
 
 @app.route('/', methods=['GET'])
 def home():
-    return '''<h1>Distant Reading Archive</h1>
-<p>A prototype API for distant reading of science fiction novels.</p>'''
+     access_token = create_access_token(identity={"email": 'raihan'})
+     return {"access_token": access_token}, 200
+
+
+#     return '''<h1>Distant Reading Archive</h1>
+# <p>A prototype API for distant reading of science fiction novels.</p>'''
 
 @app.route('/api/v1/resources/books/all', methods=['GET'])
 def api_all():
@@ -42,5 +52,11 @@ def api_id():
         if book['id'] == id:
             results.append(book)
     return jsonify(results) 
+@app.route('/test', methods=['GET'])
+@jwt_required()
+def test():
+    user = get_jwt_identity()
+    print(user)
+    return f'Welcome to the protected route !', 200
        
 app.run()
