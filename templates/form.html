@@ -1,5 +1,19 @@
-<form action="/regestration" method = "POST">
-    <p>name <input type = "text" name = "name" /></p>
-    <p>age <input type = "integer" name = "age" /></p>
-    <p><input type = "submit" value = "Submit" /></p>
- </form>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Page</title>
+</head>
+<body>
+    {% if error %}
+        <p><strong>Error:</strong> {{ error }} </p>
+    {% endif %}
+    <form action="/checklogin" method="POST">
+        <p>Enter Username:</p>
+        <p><input type="text" name="username" /></p>
+        <p>Enter Password:</p>
+        <p><input type="password" name="password" /></p>
+
+        <p><input type="submit" value="submit" /></p>
+    </form>
+</body>
+</html>
