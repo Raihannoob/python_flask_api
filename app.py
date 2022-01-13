@@ -1,15 +1,53 @@
 import flask
-from flask import request,jsonify
-from flask_jwt_extended import (
-    JWTManager, jwt_required, create_access_token,
-    get_jwt_identity
-)
+from flask import Flask, jsonify, request, make_response, redirect,render_template
+import mysql.connector
+from mysql.connector import cursor
+import jwt
+import datetime
+from functools import wraps
 app = flask.Flask(__name__)
 app.config['DEBUG'] = True
-# Setup the Flask-JWT-Extended extension. Read more: https://flask-jwt-extended.readthedocs.io/en/stable/options/
-app.config['JWT_SECRET_KEY'] = 'secret-secret'  # Change this!
-jwt = JWTManager(app)
 
+@app.route('/form')
+def form():
+    return render_template('form.html')
+ 
+@app.route('/regestration', methods = ['POST', 'GET'])
+def regestration():
+    db_connector = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="",
+        database="flask"
+    )
+    if request.method == 'GET':
+        return "Login via the login Form"
+     
+    if request.method == 'POST':
+        name = request.form['name']
+        age = request.form['age']
+        cursor = db_connector.cursor()
+        cursor.execute(''' INSERT INTO info_table VALUES(%s,%s)''',(name,age))
+        db_connector.commit()
+        cursor.close()
+        return f"Done!!"
+
+# Token Decorator
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.args.get('token')
+        if not token:
+            return jsonify({'message': 'Token is missing'}), 403
+
+        try:
+            data = jwt.decode(token, app.config['SECRET_KEY'],algorithms=['HS256'])
+        except:
+            return jsonify({'message': 'Token is invalid!'}), 403
+
+        return f(*args, **kwargs)
+
+    return decorated
 # Create some test data for our catalog in the form of a list of dictionaries.
 books = [
     {'id': 0,
@@ -29,14 +67,21 @@ books = [
      'published': '1975'}
 ]
 
-@app.route('/', methods=['GET'])
-def home():
-     access_token = create_access_token(identity={"email": 'raihan'})
-     return {"access_token": access_token}, 200
 
+# @app.route('/')
+# def index():
+#     return redirect('http://127.0.0.1:5000/login')
 
-#     return '''<h1>Distant Reading Archive</h1>
-# <p>A prototype API for distant reading of science fiction novels.</p>'''
+# @app.route('/login')
+# def login():
+#     auth = request.authorization
+
+#     # if auth and auth.password == '1234':
+#     token = jwt.encode({'user': 'raihan', 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=50)},
+#                            app.config['SECRET_KEY'])
+#     return jsonify({'token': token})
+#     # return make_response('Could not verify!', 401, {'WWW-Authenticate': 'Basic realm:"Login Required"'})
+
 
 @app.route('/api/v1/resources/books/all', methods=['GET'])
 def api_all():
@@ -52,11 +97,6 @@ def api_id():
         if book['id'] == id:
             results.append(book)
     return jsonify(results) 
-@app.route('/test', methods=['GET'])
-@jwt_required()
-def test():
-    user = get_jwt_identity()
-    print(user)
-    return f'Welcome to the protected route !', 200
+
        
 app.run()
