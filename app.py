@@ -99,98 +99,7 @@ app.config['DEBUG'] = True
 #         if book['id'] == id:
 #             results.append(book)
 #     return jsonify(results) 
-# @app.route('/data', methods=['GET'])
-# def house():
-#    # title bedroom sleeps bathroom price location
-#     hoteldata=[]
 
-#     db_connector = mysql.connector.connect(
-#         host="localhost",
-#         user="root",
-#         password="",
-#         database="Scrapping"
-#     )
-
-
-#     title = request.args.get('title')
-#     bedroom = request.args.get('bedroom')
-#     sleep = request.args.get('sleeps')
-#     bathroom = request.args.get('bathroom')
-#     price = request.args.get('price')
-#     location = request.args.get('location')
-
-#     cursor = db_connector.cursor()
-# # sleep  	bedroom  	bathroom  	price title
-#     sql= "SELECT * FROM datatable WHERE "
-#     valudata=0
-
-#     if(title!=None):
-#         if(sql=='SELECT * FROM datatable WHERE '):
-#             sql=sql+"title="+f"'{title}'"
-#         else:
-#             sql = sql + "AND title=" + f"' {title}'"
-
-#     if(location!=None):
-#         if (sql == 'SELECT * FROM datatable WHERE '):
-#             sql=sql+"location="+f"'{location}'"
-#         else:
-#             sql = sql + "AND location=" + f"'{location}'"
-#     if(bedroom!=None):
-#         if (sql == 'SELECT * FROM datatable WHERE '):
-#             sql=sql+"bedroom="+f"'{bedroom}'"
-#         else:
-#             sql = sql + "AND bedroom>=" + f"'{bedroom}'"
-#     if(bathroom!=None):
-#         if (sql == 'SELECT * FROM datatable WHERE '):
-#             sql=sql+"bathroom>="+f"'{bathroom}'"
-#         else:
-#             sql = sql + "AND bathroom>=" + f"'{bathroom}'"
-#     if(sleep!=None):
-#         if (sql == 'SELECT * FROM datatable WHERE '):
-#             sql=sql+"sleep>="+f"'{sleep}'"
-#         else:
-#             sql = sql + "AND sleep>=" + f"'{sleep}'"
-#     if(price!=None):
-#         if (sql == 'SELECT * FROM datatable WHERE '):
-#             sql=sql+"price>="+f"'${price}'"
-#         else:
-#             sql = sql + "AND price>=" + f"'${price}'"
-
-
-#     # query = ("SELECT * FROM datatable WHERE location ="+f"'{location}'  OR price=" + f"'{price}' OR bedroom=" + f"'{bedroom}'OR bathroom=" + f"'{bathroom}' OR sleep=" + f"'{sleeps}'")
-#     query=sql
-#     print(query)
-#     cursor.execute(query)
-
-#     results = cursor.fetchall()
-
-#     for x in results:
-#         data = {
-#             "Title": x[0],
-#             "Location": x[1],
-#             "Sleeps": x[2],
-#             "Bedrooms": x[3],
-#             "Bathrooms": x[4],
-#             "Price": x[5],
-#             "Picture": {
-#                 "Picture_1": x[6],
-#                 "Picture_2": x[7],
-#                 "Picture_3": x[8],
-#             }
-
-#         }
-#         hoteldata.append(data)
-
-#     # Json = json.dumps(hoteldata, indent=4)
-
-
-#     hoteldata.sort(key=lambda x: x["Price"])
-
-
-#     Json = json.dumps(hoteldata, indent=4)
-#     print(Json)
-#     # print(title, bedroom, sleeps, location)
-#     return Json
 
 
 
@@ -225,8 +134,8 @@ def dashboard():
 
 #for Databse 
 @app.route('/data', methods=['GET'])
-def house():
-   # name location ratting prices Amenities images
+def data():
+
     hoteldata=[]
 
     db_connector = mysql.connector.connect(
@@ -246,7 +155,7 @@ def house():
     cursor = db_connector.cursor()
 
     sql= "SELECT * FROM data_from_web WHERE "
-    valudata=0
+    
 
     if(name!=None):
         if(sql=='SELECT * FROM data_from_web WHERE '):
@@ -287,7 +196,6 @@ def house():
     results = cursor.fetchall()
 
     for x in results:
-         # name location ratting prices Amenities images
         data = {
             "name": x[0],
             "location": x[1],
@@ -297,6 +205,7 @@ def house():
             "images": x[5]
             }
         hoteldata.append(data)
+        print(hoteldata)
     json = jsonify(hoteldata)
     return json
 
