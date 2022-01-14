@@ -12,7 +12,7 @@ app = Flask(__name__)
 app.config['DEBUG'] = True
 
 
-SWAGGER_URL = '/swagger'
+SWAGGER_URL = '/api'
 API_URL = '/static/swagger.json'
 SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
     SWAGGER_URL,
@@ -67,12 +67,12 @@ def dashboard():
 def protected():
     #return jsonify({'message': 'Only available to people with valid tokens.'})
 
-    return redirect("http://127.0.0.1:5000/swagger",code=302)
+    return redirect("http://127.0.0.1:5000/api",code=302)
 
 
 #for Databse 
-@app.route('/data', methods=['GET'])
-def data():
+@app.route('/v1/resources', methods=['GET'])
+def resources():
 
     hoteldata=[]
 

@@ -13,7 +13,7 @@
     }
   ],
   "paths": {
-        "/data": {
+        "/v1/resources": {
       "parameters": [
         {
           "name": "name",
