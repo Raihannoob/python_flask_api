@@ -121,21 +121,17 @@ def data():
             sql=sql+"Amenities>="+f"'{Amenities}'"
         else:
             sql = sql + "AND Amenities=" + f"'{Amenities}'"
-    if(images!=None):
-        if (sql == 'SELECT * FROM data_from_web WHERE '):
-            sql=sql+"images="+f"'${images}'"
-        else:
-            sql = sql + "AND images=" + f"'${images}'"
+   
 
     query=sql
     print(query)
     cursor.execute(query)
 
     results = cursor.fetchall()
-
+    print(results)
     for x in results:
         data = {
-            "name": x[0],
+            "Hotel name": x[0],
             "location": x[1],
             "ratting": x[2],
             "prices": x[3],
@@ -144,6 +140,7 @@ def data():
             }
         hoteldata.append(data)
         print(hoteldata)
+    hoteldata.sort(key=lambda x: x["prices"])    
     json = jsonify(hoteldata)
     return json
 

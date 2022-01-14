@@ -49,15 +49,6 @@
           "required": false,
           "description": " Define Hotels Amminities",
           "type": "string"
-        },
-    
-        
-        {
-          "name": "images",
-          "in": "query",
-          "required": false,
-          "description": "Hotels images",
-          "type": "string"
         }
       ],
       "get": {
@@ -110,16 +101,8 @@
             "schema": {
               "$ref": "#/components/schemas/prices"
             }
-          },
-          {
-            "name": "images",
-            "in": "query",
-            "required": false,
-            "description": "Define Image ",
-            "schema": {
-              "$ref": "#/components/schemas/images"
-            }
           }
+          
         ],
         "responses": {
           "200": {
@@ -144,35 +127,35 @@
       },
       "location": {
         "properties": {
-          "bed": {
+          "location": {
             "type": "string"
           }
         }
       },
       "ratting": {
         "properties": {
-          "sleep": {
+          "ratting": {
             "type": "string"
           }
         }
       },
       "prices": {
         "properties": {
-          "bath": {
+          "prices": {
             "type": "string"
           }
         }
       },
       "Amenities": {
         "properties": {
-          "money": {
+          "Amenities": {
             "type": "string"
           }
         }
       },
       "images": {
         "properties": {
-          "loc": {
+          "images": {
             "type": "string"
           }
         }
