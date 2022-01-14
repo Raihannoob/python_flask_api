@@ -7,6 +7,9 @@
     {% if error %}
         <p><strong>Error:</strong> {{ error }} </p>
     {% endif %}
+    {% if Heading %}
+        <p><strong>{{ Heading }}</strong>  </p>
+    {% endif %}
     <form action="/checklogin" method="POST">
         <p>Enter Username:</p>
         <p><input type="text" name="username" /></p>

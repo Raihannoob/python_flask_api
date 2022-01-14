@@ -10,46 +10,9 @@ import json
 app = Flask(__name__)
 app.config['DEBUG'] = True
 
-# @app.route('/form')
-# def form():
-#     return render_template('form.html')
- 
-# @app.route('/regestration', methods = ['POST', 'GET'])
-# def regestration():
-#     db_connector = mysql.connector.connect(
-#         host="localhost",
-#         user="root",
-#         password="",
-#         database="flask"
-#     )
-#     if request.method == 'GET':
-#         return "Login via the login Form"
-     
-#     if request.method == 'POST':
-#         name = request.form['name']
-#         age = request.form['age']
-#         cursor = db_connector.cursor()
-#         cursor.execute(''' INSERT INTO info_table VALUES(%s,%s)''',(name,age))
-#         db_connector.commit()
-#         cursor.close()
-#         return f"Done!!"
 
-# Token Decorator
-# def token_required(f):
-#     @wraps(f)
-#     def decorated(*args, **kwargs):
-#         token = request.args.get('token')
-#         if not token:
-#             return jsonify({'message': 'Token is missing'}), 403
 
-#         try:
-#             data = jwt.decode(token, app.config['SECRET_KEY'],algorithms=['HS256'])
-#         except:
-#             return jsonify({'message': 'Token is invalid!'}), 403
 
-#         return f(*args, **kwargs)
-
-#     return decorated
 # Create some test data for our catalog in the form of a list of dictionaries.
 # books = [
 #     {'id': 0,
@@ -69,22 +32,6 @@ app.config['DEBUG'] = True
 #      'published': '1975'}
 # ]
 
-
-# @app.route('/')
-# def index():
-#     return redirect('http://127.0.0.1:5000/login')
-
-# @app.route('/login')
-# def login():
-#     auth = request.authorization
-
-#     # if auth and auth.password == '1234':
-#     token = jwt.encode({'user': 'raihan', 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=50)},
-#                            app.config['SECRET_KEY'])
-#     return jsonify({'token': token})
-#     # return make_response('Could not verify!', 401, {'WWW-Authenticate': 'Basic realm:"Login Required"'})
-
-
 # @app.route('/api/v1/resources/books/all', methods=['GET'])
 # def api_all():
 #     return jsonify(books)
@@ -102,9 +49,12 @@ app.config['DEBUG'] = True
 
 
 
+# Project Related Work Start From Here
 
-
-
+@app.route('/')
+def homepage():
+    Heading = 'Please Login First'
+    return render_template('form.html', Heading=Heading)
 
 @app.route('/login')
 def form():
