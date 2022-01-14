@@ -1,0 +1,182 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "A Open Api for Hotel Data",
+    "version": "1.0",
+    "title": "Flask Rest Api using Swagger"
+
+  },
+  "tags": [
+    {
+      "name": "Data Search",
+      "description": "Example API for searching for Hotels"
+    }
+  ],
+  "paths": {
+        "/data": {
+      "parameters": [
+        {
+          "name": "name",
+          "in": "query",
+          "required": false,
+          "description": "Name for hotels",
+          "type": "string"
+        },
+        {
+          "name": "location",
+          "in": "query",
+          "required": false,
+          "description": "Hotel location",
+          "type": "string"
+        },
+        {
+          "name": "ratting",
+          "in": "query",
+          "required": false,
+          "description": "Search for ratting",
+          "type": "string"
+        },
+        {
+          "name": "prices",
+          "in": "query",
+          "required": false,
+          "description": "Define price",
+          "type": "string"
+        },
+        {
+          "name": "Amenities",
+          "in": "query",
+          "required": false,
+          "description": " Define Hotels Amminities",
+          "type": "string"
+        },
+    
+        
+        {
+          "name": "images",
+          "in": "query",
+          "required": false,
+          "description": "Hotels images",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Data request"
+        ],
+        "summary": "Find Data with given data",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "description": "Define Hotel name",
+            "schema": {
+              "$ref": "#/components/schemas/name"
+            }
+          },
+          {
+            "name": "location",
+            "in": "query",
+            "required": false,
+            "description": "Define Location",
+            "schema": {
+              "$ref": "#/components/schemas/location"
+            }
+          },
+          {
+            "name": "Ratting",
+            "in": "query",
+            "required": false,
+            "description": "Define Ratting",
+            "schema": {
+              "$ref": "#/components/schemas/ratting"
+            }
+          },
+          {
+            "name": "Amenities",
+            "in": "query",
+            "required": false,
+            "description": "Define Amenities",
+            "schema": {
+              "$ref": "#/components/schemas/Amenities"
+            }
+          },
+          {
+            "name": "prices",
+            "in": "query",
+            "required": false,
+            "description": "Define price",
+            "schema": {
+              "$ref": "#/components/schemas/prices"
+            }
+          },
+          {
+            "name": "images",
+            "in": "query",
+            "required": false,
+            "description": "Define Image ",
+            "schema": {
+              "$ref": "#/components/schemas/images"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Misunderstood Request."
+          },
+          "404": {
+            "description": "Failed. House request not found."
+          }
+        }
+      }}},
+  "components": {
+    "schemas": {
+      "name": {
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "location": {
+        "properties": {
+          "bed": {
+            "type": "string"
+          }
+        }
+      },
+      "ratting": {
+        "properties": {
+          "sleep": {
+            "type": "string"
+          }
+        }
+      },
+      "prices": {
+        "properties": {
+          "bath": {
+            "type": "string"
+          }
+        }
+      },
+      "Amenities": {
+        "properties": {
+          "money": {
+            "type": "string"
+          }
+        }
+      },
+      "images": {
+        "properties": {
+          "loc": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

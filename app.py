@@ -5,13 +5,24 @@ import datetime
 from functools import wraps
 from mysql.connector import cursor
 import mysql.connector
+from flask_swagger_ui import get_swaggerui_blueprint
 
 import json
 app = Flask(__name__)
 app.config['DEBUG'] = True
 
 
-
+SWAGGER_URL = '/swagger'
+API_URL = '/static/swagger.json'
+SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        #need to know
+        'app_name': "Seans-Python-Flask-REST-Boilerplate"
+    }
+)
+app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
 
 # Create some test data for our catalog in the form of a list of dictionaries.
 # books = [
@@ -46,6 +57,11 @@ app.config['DEBUG'] = True
 #         if book['id'] == id:
 #             results.append(book)
 #     return jsonify(results) 
+@app.route('/protected')
+def protected():
+    #return jsonify({'message': 'Only available to people with valid tokens.'})
+
+    return redirect("http://127.0.0.1:5000/swagger",code=302)
 
 
 
@@ -111,7 +127,7 @@ def data():
         if(sql=='SELECT * FROM data_from_web WHERE '):
             sql=sql+"name="+f"'{name}'"
         else:
-            sql = sql + "AND title=" + f"' {name}'"
+            sql = sql + "AND name=" + f"' {name}'"
 
     if(location!=None):
         if (sql == 'SELECT * FROM data_from_web WHERE '):
