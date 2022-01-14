@@ -13,6 +13,10 @@
 - Once you have activated your programming environment, install Flask using the pip install command:
  ```bash
   pip install flask
+  pip install flask_swagger_ui
+  pip install PyJWT
+  pip install mysql-connector-python
+
 ```
 
 - Creating a Simple Application app.py
@@ -28,6 +32,13 @@
 
 ```
 #### step 5
+- Lastly,inatall requirements.txt:
+
+```bash
+pip install -r requirements.txt python3 app.py
+
+```
+#### step 6
 - Lastly, run the application using the flask run command:
 
 ```bash
