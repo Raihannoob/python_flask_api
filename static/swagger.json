@@ -85,7 +85,7 @@
             }
           },
           {
-            "name": "Ratting",
+            "name": "ratting",
             "in": "query",
             "required": false,
             "description": "Define Ratting",
