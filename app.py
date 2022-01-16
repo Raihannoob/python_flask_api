@@ -28,7 +28,7 @@ app.config.from_mapping(
 
 Swagger(app, config=swagger_config, template=template)
 
-@app.post('/api/v1/login')
+@app.post('/resources/v1/login')
 @swag_from('./static/login.yaml')
 def login():
     email = request.args.get('email')
@@ -45,7 +45,7 @@ def login():
 
 
 #for Databse 
-@app.get('/api/v1/hotels')
+@app.get('/resources/v1/hotels')
 @jwt_required()
 @swag_from('./static/hotel.yaml')
 def resources():
