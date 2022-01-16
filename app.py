@@ -80,7 +80,7 @@ def login():
 @app.route('/protected')
 @token_required
 def protected():
-    #return jsonify({'message': 'Only available to people with valid tokens.'})
+    
 
     return redirect("http://127.0.0.1:5000/api",code=302)
 
