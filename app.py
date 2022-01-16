@@ -2,8 +2,6 @@ from tempfile import template
 import flask
 from flask import Flask, jsonify, request, make_response, redirect,render_template
 from flasgger import Swagger,swag_from
-import datetime
-from functools import wraps
 from mysql.connector import cursor
 import mysql.connector
 from static.swagger import swagger_config,template
@@ -34,15 +32,13 @@ def login():
     email = request.args.get('email')
     password = request.args.get('password')
     if email == 'admin' and password == 'admin':
-#             #we will generate Jwt token Here 
-        token = create_access_token(identity= email, expires_delta=timedelta(minutes=10))
+#       #we will generate Jwt token Here 
+        token = create_access_token(identity= email, expires_delta=timedelta(minutes=5))
         return jsonify({'token': token})
   
     else:
         return 'Invalid Credentials. Please try again.'
         
-
-
 
 #for Databse 
 @app.get('/resources/v1/hotels')

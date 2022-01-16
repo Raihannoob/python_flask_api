@@ -15,14 +15,6 @@ template = {
         "http",
         "https"
     ],
-    "securityDefinitions": {
-        "Bearer": {
-            "type": "apiKey",
-            "name": "Bearer ",
-            "in": "header",
-            "description": "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\""
-        },
-    },
 }
 
 swagger_config = {
