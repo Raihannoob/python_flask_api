@@ -11,7 +11,7 @@ import json
 app = Flask(__name__)
 app.config['DEBUG'] = True
 
-
+#Start swagger specific 
 SWAGGER_URL = '/api'
 API_URL = '/static/swagger.json'
 SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
@@ -19,14 +19,31 @@ SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
     API_URL,
     config={
         #need to know
-        'app_name': "Seans-Python-Flask-REST-Boilerplate"
+        'app_name': "Python_flask_Api"
     }
 )
 app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
+#end swagger specific
 
-#JWT tOCKEN
+#my secret KeY for jwt
+app.config['SECRET_KEY'] = 'BANGLADESH'
+#tocken decorator
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.args.get('token')
 
+        if not token:
+            return jsonify({'message': 'Token is missing'}), 403
 
+        try:
+            data = jwt.decode(token, app.config['SECRET_KEY'],algorithms=['HS256'])
+        except:
+            return jsonify({'message': 'Token is invalid!'}), 403
+
+        return f(*args, **kwargs)
+
+    return decorated
 
 
 # Project Related Work Start From Here
@@ -47,23 +64,21 @@ def login():
         password = request.form.get('password')     
         if username == 'admin' and password == 'admin':
             #we will generate Jwt token Here 
-            return redirect('/dashboard')
+            token = jwt.encode({'user': username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=50)},
+                           app.config['SECRET_KEY'])
+            return jsonify({'token': token})
+  
         else:
             error = 'Invalid Credentials. Please try again.'
             return render_template('form.html', error=error)
     else:
         return "Please Login First"
-    return render_template("login.html")
+    return render_template("form.html")
 
-
-
-@app.route('/dashboard')
-def dashboard():
-    # we will Show Swagger UI here
-    return "login successfully"
 
 
 @app.route('/protected')
+@token_required
 def protected():
     #return jsonify({'message': 'Only available to people with valid tokens.'})
 
@@ -97,15 +112,15 @@ def resources():
 
     if(name!=None):
         if(sql=='SELECT * FROM data_from_web WHERE '):
-            sql=sql+"name="+f"'{name}'"
+            sql=sql+"name LIKE"+f"'%{name}%'"
         else:
-            sql = sql + "AND name=" + f"' {name}'"
+            sql = sql + "AND name LIKE" + f"'%{name}%'"
 
     if(location!=None):
         if (sql == 'SELECT * FROM data_from_web WHERE '):
-            sql=sql+"location="+f"'{location}'"
+            sql=sql+"location LIKE"+f"'%{location}%'"
         else:
-            sql = sql + "AND location=" + f"'{location}'"
+            sql = sql + "AND location LIKE" + f"'%{location}%'"
     if(ratting!=None):
         if (sql == 'SELECT * FROM data_from_web WHERE '):
             sql=sql+"ratting="+f"'{ratting}'"
@@ -113,14 +128,14 @@ def resources():
             sql = sql + "AND ratting=" + f"'{ratting}'"
     if(prices!=None):
         if (sql == 'SELECT * FROM data_from_web WHERE '):
-            sql=sql+"prices>="+f"'{prices}'"
+            sql=sql+"prices >="+f"'{prices}'"
         else:
-            sql = sql + "AND prices=" + f"'{prices}'"
+            sql = sql + "AND prices >=" + f"'{prices}'"
     if(Amenities!=None):
         if (sql == 'SELECT * FROM data_from_web WHERE '):
-            sql=sql+"Amenities>="+f"'{Amenities}'"
+            sql=sql+"Amenities LIKE"+f"'%{Amenities}%'"
         else:
-            sql = sql + "AND Amenities=" + f"'{Amenities}'"
+            sql = sql + "AND Amenities LIKE" + f"'%{Amenities}%'"
    
 
     query=sql
