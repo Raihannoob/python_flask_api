@@ -16,6 +16,8 @@
   pip install flask_swagger_ui
   pip install PyJWT
   pip install mysql-connector-python
+  pip install Flask-JWT-Extended
+  pip install flasgger
 
 ```
 
