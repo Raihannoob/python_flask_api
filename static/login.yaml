@@ -1,0 +1,58 @@
+User log in
+---
+tags:
+  - Authentication
+parameters:
+  - name: "email"
+    in: "query"
+    description: "The user email for login"
+    required: true
+    type: "string"
+  - name: "password"
+    in: "query"
+    description: "The password for login in clear text"
+    required: true
+    type: "string"
+responses:
+  "200":
+    description: "successful operation"
+    schema:
+      type: "string"
+    headers:
+      X-Rate-Limit:
+        type: "integer"
+        format: "int32"
+        description: "calls per hour allowed by the user"
+      X-Expires-After:
+        type: "string"
+        format: "date-time"
+        description: "date in UTC when token expires"
+  "400":
+    description: "Invalid username/password supplied"
+# parameters:
+#   - name: body
+#     description: The body should contain the user login credentials
+#     in: body
+#     required: true
+#     schema:
+#       type: object
+#       required:
+#         - "email"
+#         - "password"
+#       properties:
+#         email:
+#           type: "email"
+#           example: "user@gmail.com"
+#         password:
+#           type: "string"
+#           format: password
+#           example: "********"
+# responses:
+#   200:
+#     description: When a user successfully logs in
+
+#   400:
+#     description: Fails to login due to bad request data
+
+#   401:
+#     description: A user supplies incorrect credentials

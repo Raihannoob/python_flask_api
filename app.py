@@ -1,163 +1,128 @@
+from tempfile import template
 import flask
 from flask import Flask, jsonify, request, make_response, redirect,render_template
-import jwt
+from flasgger import Swagger,swag_from
 import datetime
 from functools import wraps
 from mysql.connector import cursor
 import mysql.connector
-from flask_swagger_ui import get_swaggerui_blueprint
+from static.swagger import swagger_config,template
+from flask_jwt_extended import JWTManager
+from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
+from datetime import timedelta
+# from flask_swagger_ui import get_swaggerui_blueprint
 
 import json
 app = Flask(__name__)
 app.config['DEBUG'] = True
+JWTManager(app)
 
-#Start swagger specific 
-SWAGGER_URL = '/api'
-API_URL = '/static/swagger.json'
-SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
-    SWAGGER_URL,
-    API_URL,
-    config={
-        #need to know
-        'app_name': "Python_flask_Api"
-    }
-)
-app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
-#end swagger specific
+app.config.from_mapping(
+            
+            JWT_SECRET_KEY =("JWT_SECRET_KEY"),
+            SWAGGER = {
+                "title" : "Best Hotels Api",
+                "uiversion" : 3
+            }
+        )
 
-#my secret KeY for jwt
-app.config['SECRET_KEY'] = 'BANGLADESH'
-#tocken decorator
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = request.args.get('token')
+Swagger(app, config=swagger_config, template=template)
 
-        if not token:
-            return jsonify({'message': 'Token is missing'}), 403
-
-        try:
-            data = jwt.decode(token, app.config['SECRET_KEY'],algorithms=['HS256'])
-        except:
-            return jsonify({'message': 'Token is invalid!'}), 403
-
-        return f(*args, **kwargs)
-
-    return decorated
-
-
-# Project Related Work Start From Here
-
-@app.route('/')
-def homepage():
-    Heading = 'Please Login First'
-    return render_template('form.html', Heading=Heading)
-
-@app.route('/login')
-def form():
-    return render_template('form.html')
-
-@app.route('/checklogin', methods = ['POST', 'GET'])
+@app.post('/api/v1/login')
+@swag_from('./static/login.yaml')
 def login():
-    if(request.method == 'POST'):
-        username = request.form.get('username')
-        password = request.form.get('password')     
-        if username == 'admin' and password == 'admin':
-            #we will generate Jwt token Here 
-            token = jwt.encode({'user': username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=50)},
-                           app.config['SECRET_KEY'])
-            return jsonify({'token': token})
+    email = request.args.get('email')
+    password = request.args.get('password')
+    if email == 'admin' and password == 'admin':
+#             #we will generate Jwt token Here 
+        token = create_access_token(identity= email, expires_delta=timedelta(minutes=10))
+        return jsonify({'token': token})
   
-        else:
-            error = 'Invalid Credentials. Please try again.'
-            return render_template('form.html', error=error)
     else:
-        return "Please Login First"
-    return render_template("form.html")
+        return 'Invalid Credentials. Please try again.'
+        
 
-
-
-@app.route('/protected')
-@token_required
-def protected():
-    
-
-    return redirect("http://127.0.0.1:5000/api",code=302)
 
 
 #for Databse 
-@app.route('/v1/resources', methods=['GET'])
+@app.get('/api/v1/hotels')
+@jwt_required()
+@swag_from('./static/hotel.yaml')
 def resources():
+    user_email = get_jwt_identity()
+    if user_email == 'admin':
 
-    hoteldata=[]
+        hoteldata=[]
 
-    db_connector = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="",
-        database="Scrap"
-    )
+        db_connector = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="",
+            database="Scrap"
+        )
 
-    name = request.args.get('name')
-    location = request.args.get('location')
-    ratting = request.args.get('ratting')
-    prices = request.args.get('prices')
-    Amenities = request.args.get('Amenities')
-    images = request.args.get('images')
+        name = request.args.get('name')
+        location = request.args.get('location')
+        ratting = request.args.get('ratting')
+        prices = request.args.get('prices')
+        Amenities = request.args.get('Amenities')
+        images = request.args.get('images')
 
-    cursor = db_connector.cursor()
+        cursor = db_connector.cursor()
 
-    sql= "SELECT * FROM data_from_web WHERE "
+        sql= "SELECT * FROM data_from_web WHERE "
+        
+
+        if(name!=None):
+            if(sql=='SELECT * FROM data_from_web WHERE '):
+                sql=sql+"name LIKE"+f"'%{name}%'"
+            else:
+                sql = sql + "AND name LIKE" + f"'%{name}%'"
+
+        if(location!=None):
+            if (sql == 'SELECT * FROM data_from_web WHERE '):
+                sql=sql+"location LIKE"+f"'%{location}%'"
+            else:
+                sql = sql + "AND location LIKE" + f"'%{location}%'"
+        if(ratting!=None):
+            if (sql == 'SELECT * FROM data_from_web WHERE '):
+                sql=sql+"ratting="+f"'{ratting}'"
+            else:
+                sql = sql + "AND ratting=" + f"'{ratting}'"
+        if(prices!=None):
+            if (sql == 'SELECT * FROM data_from_web WHERE '):
+                sql=sql+"prices >="+f"'{prices}'"
+            else:
+                sql = sql + "AND prices >=" + f"'{prices}'"
+        if(Amenities!=None):
+            if (sql == 'SELECT * FROM data_from_web WHERE '):
+                sql=sql+"Amenities LIKE"+f"'%{Amenities}%'"
+            else:
+                sql = sql + "AND Amenities LIKE" + f"'%{Amenities}%'"
     
 
-    if(name!=None):
-        if(sql=='SELECT * FROM data_from_web WHERE '):
-            sql=sql+"name LIKE"+f"'%{name}%'"
-        else:
-            sql = sql + "AND name LIKE" + f"'%{name}%'"
+        query=sql
+        print(query)
+        cursor.execute(query)
 
-    if(location!=None):
-        if (sql == 'SELECT * FROM data_from_web WHERE '):
-            sql=sql+"location LIKE"+f"'%{location}%'"
-        else:
-            sql = sql + "AND location LIKE" + f"'%{location}%'"
-    if(ratting!=None):
-        if (sql == 'SELECT * FROM data_from_web WHERE '):
-            sql=sql+"ratting="+f"'{ratting}'"
-        else:
-            sql = sql + "AND ratting=" + f"'{ratting}'"
-    if(prices!=None):
-        if (sql == 'SELECT * FROM data_from_web WHERE '):
-            sql=sql+"prices >="+f"'{prices}'"
-        else:
-            sql = sql + "AND prices >=" + f"'{prices}'"
-    if(Amenities!=None):
-        if (sql == 'SELECT * FROM data_from_web WHERE '):
-            sql=sql+"Amenities LIKE"+f"'%{Amenities}%'"
-        else:
-            sql = sql + "AND Amenities LIKE" + f"'%{Amenities}%'"
-   
-
-    query=sql
-    print(query)
-    cursor.execute(query)
-
-    results = cursor.fetchall()
-    print(results)
-    for x in results:
-        data = {
-            "Hotel name": x[0],
-            "location": x[1],
-            "ratting": x[2],
-            "prices": x[3],
-            "Amenities":x[4],
-            "images": x[5]
-            }
-        hoteldata.append(data)
-        print(hoteldata)
-    hoteldata.sort(key=lambda x: x["prices"])    
-    json = jsonify(hoteldata)
-    return json
+        results = cursor.fetchall()
+        print(results)
+        for x in results:
+            data = {
+                "Hotel name": x[0],
+                "location": x[1],
+                "ratting": x[2],
+                "prices": x[3],
+                "Amenities":x[4],
+                "images": x[5]
+                }
+            hoteldata.append(data)
+            print(hoteldata)
+        hoteldata.sort(key=lambda x: x["prices"])    
+        json = jsonify(hoteldata)
+        return json
+    else:
+        return 'invalid Token'    
 
        
 app.run()

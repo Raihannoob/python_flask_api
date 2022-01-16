@@ -1,0 +1,38 @@
+tags:
+  - "Hotel"
+security:
+  - Bearer
+summary: "Search for Hotels"
+description: ""
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+parameters:
+  - in: header
+    name: Authorization
+    required: true
+  - name: "name"
+    in: "query"
+    description: "Enter Hotel name"
+    type: "string"
+  - name: "location"
+    in: "query"
+    description: "Enter location"
+    type: "string"
+  - name: "prices"
+    in: "query"
+    type: "string"
+    description: "Enter price"
+    type: "integer"
+  - name: "Amenities"
+    in: "query"
+    description: "Enter Amenities"
+    type: "string"
+  - name: "ratting"
+    in: "query"
+    description: "Enter Ratting"
+    type: "string"
+responses:
+  "405":
+    description: "Invalid input"
