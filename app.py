@@ -19,7 +19,7 @@ app.config.from_mapping(
             
             JWT_SECRET_KEY =("Bangladesh"),
             SWAGGER = {
-                "title" : "Best Hotels Api",
+                "title" : "Hotel Api",
                 "uiversion" : 3
             }
         )
