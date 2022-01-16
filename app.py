@@ -17,7 +17,7 @@ JWTManager(app)
 
 app.config.from_mapping(
             
-            JWT_SECRET_KEY =("JWT_SECRET_KEY"),
+            JWT_SECRET_KEY =("Bangladesh"),
             SWAGGER = {
                 "title" : "Best Hotels Api",
                 "uiversion" : 3
