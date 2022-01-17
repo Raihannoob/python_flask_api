@@ -3,7 +3,6 @@
   <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
 </p>
 
-# python_flask_api
 #### Features
 - It takes any or all parameters from query string like Hotel name,price,location,ratting,Amminities and gives api data.
 - For authentication you have to go http://127.0.0.1:5000/ this route and  appear a Swagger UI there you will get a post/login option click there and provide your account information where usernaem is "admin" password is "admin" .
