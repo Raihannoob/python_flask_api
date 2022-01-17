@@ -1,9 +1,18 @@
+<h1 align="center">python_Flask_api  👋</h1>
+<p>
+  <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
+</p>
+
 # python_flask_api
 #### Features
 - It takes any or all parameters from query string like Hotel name,price,location,ratting,Amminities and gives api data.
 - For authentication you have to go http://127.0.0.1:5000/ this route and  appear a Swagger UI there you will get a post/login option click there and provide your account information where usernaem is "admin" password is "admin" .
 - After login Successfully you Will get a JWt token which is valid for 5 min.
 - Then go to get hotel option and there you saw a input box for authorization Which is must required for access data.so you have to give the Jwt token to access.jwt Token formet : Bearer your_token and give  parameter and response data if available sorted by prices
+
+#### prerequisite
+- Install Python
+- Install XAMPP
 
  #### step 1
  - install virtual env by this command 
@@ -52,4 +61,28 @@ pip install -r requirements.txt python3 app.py
  flask run
 
 ```
+#### Database Creation
+
+- Import data_from_web.sql
+- If the data_from_web.sql does't work then create table using the query bellow
+
+CREATE TABLE `data_from_web` (
+  `name` varchar(255) NOT NULL,
+  `location` varchar(255) NOT NULL,
+  `ratting` varchar(255) NOT NULL,
+  `prices` int(255) NOT NULL,
+  `Amenities` varchar(255) NOT NULL,
+  `images` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+- If table doesn't work then Import the (Scrap.sql) provided with the cloned folder into the database. 
+
+
+## Feedback
+
+If you have any feedback, please reach out to us at tanvir@w3engineers.com
+
+
+## 🚀 About Me
+I'm a Softwere Engineer Intern...
 
