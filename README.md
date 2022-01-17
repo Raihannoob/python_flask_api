@@ -7,7 +7,13 @@
 - It takes any or all parameters from query string like Hotel name,price,location,ratting,Amminities and gives api data.
 - For authentication you have to go http://127.0.0.1:5000/ this route and  appear a Swagger UI there you will get a post/login option click there and provide your account information where usernaem is "admin" password is "admin" .
 - After login Successfully you Will get a JWt token which is valid for 5 min.
-- Then go to get hotel option and there you saw a input box for authorization Which is must required for access data.so you have to give the Jwt token to access.jwt Token formet : Bearer your_token and give  parameter and response data if available sorted by prices
+- Then go to get hotel option and there you saw a input box for authorization Which is must required for access data.so you have to give the Jwt token to access.jwt Token formet : Bearer your_token and give  parameter and response data if available sorted by prices.
+
+#### How complete this project
+- First You should know besic knowledge about python,then you should switch to flask documentation I read several documentation about flask here is the documentation link https://www.tutorialspoint.com/flask/index.htm ,https://www.digitalocean.com/community/tutorials/how-to-create-your-first-web-application-using-flask-and-python-3
+- So after finishing the flask besic then switch to Flask Api hpow it wroks by reading this doucumentation https://programminghistorian.org/en/lessons/creating-apis-with-python-and-flask it will give you a proper idea about flask apis
+- After that we need a JWT authentication for our api so try to grab some idea about Jwt authentication by reading this documentation https://flask-jwt-extended.readthedocs.io/en/stable/ or watch this video from youtube https://www.youtube.com/watch?v=AsQ8OcVvK3U
+- Now we need a ui to test your api so now try to grab some idea about swagger Ui by reading this https://swagger.io/specification/ I will recommend you for swagger try to find some project in swagger and edit json file to understand swagger ui or you should use editor.swagger.io 
 
 #### prerequisite
 - Install Python
