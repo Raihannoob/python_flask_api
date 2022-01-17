@@ -24,7 +24,7 @@
   source venv/bin/activate
 ```
 #### step 3
-- Once you have activated your programming environment, install Flask using the pip install command:
+- Once you have activated your programming environment, install this packages by this  command:
  ```bash
   pip install flask
   pip install flask_swagger_ui
