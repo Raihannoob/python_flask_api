@@ -11,9 +11,9 @@
 
 #### How complete this project
 - First You should know besic knowledge about python,then you should switch to flask documentation I read several documentation about flask here is the documentation link https://www.tutorialspoint.com/flask/index.htm ,https://www.digitalocean.com/community/tutorials/how-to-create-your-first-web-application-using-flask-and-python-3
-- So after finishing the flask besic then switch to Flask Api hpow it wroks by reading this doucumentation https://programminghistorian.org/en/lessons/creating-apis-with-python-and-flask it will give you a proper idea about flask apis
-- After that we need a JWT authentication for our api so try to grab some idea about Jwt authentication by reading this documentation https://flask-jwt-extended.readthedocs.io/en/stable/ or watch this video from youtube https://www.youtube.com/watch?v=AsQ8OcVvK3U
-- Now we need a ui to test your api so now try to grab some idea about swagger Ui by reading this https://swagger.io/specification/ I will recommend you for swagger try to find some project in swagger and edit json file to understand swagger ui or you should use editor.swagger.io 
+- So after finishing the flask besic then switch to Flask Api how it wroks by reading this doucumentation https://programminghistorian.org/en/lessons/creating-apis-with-python-and-flask it will give you a proper idea about flask api.
+- After that we need a JWT authentication for our api for security reason so try to grab some idea about Jwt authentication by reading this documentation https://flask-jwt-extended.readthedocs.io/en/stable/ or watch this video from youtube https://www.youtube.com/watch?v=AsQ8OcVvK3U
+- Now we need a ui to test our api so now try to grab some idea about swagger Ui by reading this https://swagger.io/specification/ I will recommend you for swagger try to find some project in swagger and edit json file to understand swagger ui or you can use editor.swagger.io for swagger json knowledge  
 
 #### prerequisite
 - Install Python
